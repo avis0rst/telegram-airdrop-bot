@@ -1,0 +1,46 @@
+from telegram import Update
+from telegram.ext import Updater, CommandHandler, CallbackContext
+
+# Replace this with your bot token
+token = "7667839319:AAHV0A-Lijc5OtDQ0StNOAz9kWWrsPSeoIc"
+
+airdrop_list = {
+    "AI Projects": [
+        ("SaharaLabs AI", "https://t.me/sageairdrops/9574"),
+        ("Fraction Ai Airdrop", "https://t.me/sageairdrops/9482"),
+        ("Mira Airdrop", "https://t.me/sageairdrops/10081"),
+    ],
+    "Node Run Projects": [
+        ("Pipe Network Airdrop", "https://t.me/sageairdrops/10086"),
+        ("Gaianet Airdrop", "https://t.me/sageairdrops/9329"),
+    ],
+    "Layer 1 Blockchain": [
+        ("Monad Airdrop", "https://t.me/sageairdrops/10049"),
+        ("Fogo Chain Airdrop", "https://t.me/sageairdrops/10200"),
+    ],
+}
+
+def start(update: Update, context: CallbackContext) -> None:
+    update.message.reply_text("Welcome! Use /airdrops to see the available airdrops.")
+
+def airdrops(update: Update, context: CallbackContext) -> None:
+    message = "\U0001F4E6 Available Airdrops:\n\n"
+    for category, items in airdrop_list.items():
+        message += f"\U0001F680 *{category}*\n"
+        for name, link in items:
+            message += f"- [{name}]({link})\n"
+        message += "\n"
+    update.message.reply_text(message, parse_mode="Markdown", disable_web_page_preview=True)
+
+def main():
+    updater = Updater(token)
+    dp = updater.dispatcher
+    
+    dp.add_handler(CommandHandler("start", start))
+    dp.add_handler(CommandHandler("airdrops", airdrops))
+    
+    updater.start_polling()
+    updater.idle()
+
+if __name__ == "__main__":
+    main()
